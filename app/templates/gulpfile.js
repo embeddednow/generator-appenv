@@ -1,0 +1,73 @@
+'use strict';
+
+var browserify = require('browserify'),
+    concat = require('gulp-concat'),
+    gulp = require('gulp'),
+    lint = require('gulp-eslint'),
+    sass = require('gulp-sass'),
+    source = require('vinyl-source-stream');
+
+var config = {
+  paths: {
+    css: [
+      './src/sass'
+    ],
+
+    dist: './dist',
+
+    html: './src/*.html',
+
+    images: './src/images/*',
+
+    js: './src/**/*.js',
+
+    mainJs: './src/main.js',
+
+    manifest: './src/manifest.json'
+  }
+};
+
+gulp.task('css', function() {
+  gulp.src(config.paths.css).
+    pipe(sass.sync().on('error', sass.logError)).
+    pipe(concat('bundle.css')).
+    pipe(gulp.dest(config.paths.dist + '/css'));
+});
+
+gulp.task('html', function() {
+  gulp.src(config.paths.html).
+    pipe(gulp.dest(config.paths.dist));
+});
+
+gulp.task('images', function() {
+  gulp.src(config.paths.images).
+    pipe(gulp.dest(config.paths.dist + '/images'));
+});
+
+gulp.task('js', function() {
+  browserify(config.paths.mainJs).
+    bundle().
+    on('error', console.error.bind(console)).
+    pipe(source('bundle.js')).
+    pipe(gulp.dest(config.paths.dist + '/scripts'));
+});
+
+gulp.task('lint', function() {
+  return gulp.src(config.paths.js).
+           pipe(lint({ config: "eslint.config.json" })).
+           pipe(lint.format());
+});
+
+gulp.task('manifest', function() {
+  gulp.src(config.paths.manifest).
+    pipe(gulp.dest(config.paths.dist));
+});
+
+gulp.task('default', [
+  'lint',
+  'html',
+  'js',
+  'css',
+  'images',
+  'manifest'
+]);

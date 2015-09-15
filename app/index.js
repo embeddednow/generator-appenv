@@ -75,6 +75,13 @@ module.exports = generators.Base.extend({
       );
     },
 
+    mainJs: function() {
+      this.fs.copyTpl(
+        this.templatePath('src/main.js'),
+        this.destinationPath('src/main.js')
+      )
+    },
+
     manifest: function() {
       this.fs.copyTpl(
         this.templatePath('src/manifest.json'),
@@ -86,6 +93,25 @@ module.exports = generators.Base.extend({
           screenHeight: this.userConfig.screenHeight,
           screenWidth: this.userConfig.screenWidth
         }
+      );
+    },
+
+    gulp: function() {
+      this.fs.copyTpl(
+        this.templatePath('gulpfile.js'),
+        this.destinationPath('gulpfile.js')
+      );
+
+      this.fs.copyTpl(
+        this.templatePath('eslint.config.json'),
+        this.destinationPath('eslint.config.json')
+      );
+    },
+
+    package: function() {
+      this.fs.copyTpl(
+        this.templatePath('package.json'),
+        this.destinationPath('package.json')
       );
     }
   }
