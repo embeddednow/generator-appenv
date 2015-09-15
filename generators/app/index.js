@@ -1,6 +1,7 @@
 'require strict';
 
-var generators = require('yeoman-generator');
+var generators = require('yeoman-generator')
+    _ = require('lodash');
 
 module.exports = generators.Base.extend({
   constructor: function() {
@@ -11,48 +12,47 @@ module.exports = generators.Base.extend({
     applicationName: function() {
       var done = this.async();
 
-      this.prompt({
-          type:    'input',
-          name:    'name',
-          message: 'Application Name',
-          default: this.appname
-        },
+      var prompts = [{
+        type: 'input',
+        name: 'applicationName',
+        message: 'Application Name',
+        default: this.appname
+      }, {
+        type: 'input',
+        name: 'version',
+        message: 'Version',
+        default: '1.0.0'
+      }, {
+        type: 'input',
+        name: 'authors',
+        message: 'Authors (comma separated)',
+        store: true
+      },
+      {
+        type:    'input',
+        name:    'screenHeight',
+        message: 'Screen Height',
+        default: 768,
+        store:   true
+      }, {
+        type:    'input',
+        name:    'screenWidth',
+        message: 'Screen Width',
+        default: 1024,
+        store:   true
+      }];
+
+      this.prompt(
+        prompts,
         function(answers) {
-          this.log(answers.name);
-          done();
-        }.bind(this)
-      );
-    },
+          this.userConfig = {};
 
-    height: function() {
-      var done = this.async();
+          this.userConfig.applicationName = answers.applicationName;
+          this.userConfig.version = answers.version;
+          this.userConfig.authors = _.map(answers.authors.split(','), function(author) { return author.trim() });
+          this.userConfig.screenHeight = answers.screenHeight;
+          this.userConfig.screenWidth = answers.screenWidth;
 
-      this.prompt({
-          type:    'input',
-          name:    'height',
-          message: 'Screen Height',
-          default: 768,
-          store:   true
-        },
-        function(answers) {
-          this.log(answers.height);
-          done();
-        }.bind(this)
-                 );
-    },
-
-    width: function() {
-      var done = this.async();
-
-      this.prompt({
-          type:    'input',
-          name:    'width',
-          message: 'Screen Width',
-          default: 1024,
-          store:   true
-        },
-        function(answers) {
-          this.log(answers.width);
           done();
         }.bind(this)
       );
