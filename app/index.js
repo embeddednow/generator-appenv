@@ -62,7 +62,7 @@ module.exports = generators.Base.extend({
   writing: {
     rootDocument: function() {
       this.fs.copyTpl(
-        this.templatePath('index.html'),
+        this.templatePath('src/index.html'),
         this.destinationPath('src/index.html'),
         { applicationName: this.userConfig.applicationName }
       );
@@ -70,7 +70,7 @@ module.exports = generators.Base.extend({
 
     manifest: function() {
       this.fs.copyTpl(
-        this.templatePath('manifest.json'),
+        this.templatePath('src/manifest.json'),
         this.destinationPath('src/manifest.json'),
         {
           applicationName: this.userConfig.applicationName,
