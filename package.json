@@ -1,0 +1,13 @@
+{
+  "name": "generator-appenv",
+  "version": "0.0.1",
+  "description": "Generates a scaffold for an appenv application.",
+  "author": "Embedded Now, Inc.",
+  "license": "UNLICENSED",
+  "keywords": [
+    "yeoman-generator"
+  ],
+  "dependencies": {
+    "yeoman-generator": "^0.20.2"
+  }
+}
