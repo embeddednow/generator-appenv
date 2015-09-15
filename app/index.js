@@ -66,6 +66,20 @@ module.exports = generators.Base.extend({
         this.destinationPath('src/index.html'),
         { applicationName: this.userConfig.applicationName }
       );
+    },
+
+    manifest: function() {
+      this.fs.copyTpl(
+        this.templatePath('manifest.json'),
+        this.destinationPath('src/manifest.json'),
+        {
+          applicationName: this.userConfig.applicationName,
+          version: this.userConfig.version,
+          authors: _.map(this.userConfig.authors, function(author){ return '"' + author + '"'; }).join(', '),
+          screenHeight: this.userConfig.screenHeight,
+          screenWidth: this.userConfig.screenWidth
+        }
+      );
     }
   }
 });

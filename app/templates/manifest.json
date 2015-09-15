@@ -1,0 +1,10 @@
+{
+  "name": "<%= applicationName %>",
+  "version": "<%= version %>",
+  "authors": [<%- authors %>],
+  "rootDocument": "index.html",
+  "dimensions": {
+    "height": <%= screenHeight%>,
+    "width": <%= screenWidth %>
+  }
+}
