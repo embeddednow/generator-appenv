@@ -57,5 +57,15 @@ module.exports = generators.Base.extend({
         }.bind(this)
       );
     }
+  },
+
+  writing: {
+    rootDocument: function() {
+      this.fs.copyTpl(
+        this.templatePath('index.html'),
+        this.destinationPath('src/index.html'),
+        { applicationName: this.userConfig.applicationName }
+      );
+    }
   }
 });
