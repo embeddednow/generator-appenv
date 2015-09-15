@@ -60,6 +60,13 @@ module.exports = generators.Base.extend({
   },
 
   writing: {
+    gitignore: function() {
+      this.fs.copyTpl(
+        this.templatePath('gitignore'),
+        this.destinationPath('.gitignore')
+      )
+    },
+
     rootDocument: function() {
       this.fs.copyTpl(
         this.templatePath('src/index.html'),
