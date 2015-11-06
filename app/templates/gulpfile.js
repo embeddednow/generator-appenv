@@ -8,11 +8,18 @@ var browserify = require('browserify'),
     sass = require('gulp-sass'),
     source = require('vinyl-source-stream');
 
+    <%
+    var css_srcs = ['\'./src.sass\''];
+
+    if(scaffold.indexOf('Bootstrap') > -1) {
+      css_srcs.push('\'node_modules/bootstrap/dist/css/bootstrap.min.css\'');
+      css_srcs.push('\'node_modules/bootstrap/dist/css/bootstrap-theme.min.css\'');
+    }
+    -%>
+
 var config = {
   paths: {
-    css: [
-      './src/sass'
-    ],
+    css: [<%- css_srcs.join(", ") %>],
 
     dist: './dist',
 

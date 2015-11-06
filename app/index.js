@@ -121,7 +121,9 @@ module.exports = generators.Base.extend({
       }
 
       if(this.userConfig.scaffold.indexOf('Bootstrap') > -1) {
+        packages.push({ name: 'jquery', version: '^2.1.4' });
         packages.push({ name: 'bootstrap', version: '^3.3.5' });
+        packages.push({ name: 'react-bootstrap', version: '^0.27.3' });
       }
 
       this.fs.copyTpl(
@@ -165,11 +167,15 @@ module.exports = generators.Base.extend({
 
       this.fs.copyTpl(
         this.templatePath(src_root + '/js/components/Footer.react.js'),
-        this.destinationPath('src/js/components/Footer.react.js'));
+        this.destinationPath('src/js/components/Footer.react.js'),
+        {
+          applicationName: this.userConfig.applicationName
+        });
 
       this.fs.copyTpl(
         this.templatePath(src_root + '/js/components/Header.react.js'),
-        this.destinationPath('src/js/components/Header.react.js'));
+        this.destinationPath('src/js/components/Header.react.js'),
+        { applicationName: this.userConfig.applicationName });
 
       this.fs.copyTpl(
         this.templatePath(src_root + '/js/components/Login.react.js'),
