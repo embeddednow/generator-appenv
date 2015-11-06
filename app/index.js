@@ -40,6 +40,12 @@ module.exports = generators.Base.extend({
         message: 'Screen Width',
         default: 1024,
         store:   true
+      }, {
+        type:    'list',
+        name:    'scaffold',
+        message: 'Scaffold application with',
+        default: 'nothing',
+        choices: ['nothing', 'React and Bootstrap']
       }];
 
       this.prompt(
@@ -52,6 +58,7 @@ module.exports = generators.Base.extend({
           this.userConfig.authors = _.map(answers.authors.split(','), function(author) { return author.trim() });
           this.userConfig.screenHeight = answers.screenHeight;
           this.userConfig.screenWidth = answers.screenWidth;
+          this.userConfig.scaffold = answers.scaffold;
 
           done();
         }.bind(this)
@@ -64,21 +71,6 @@ module.exports = generators.Base.extend({
       this.fs.copyTpl(
         this.templatePath('gitignore'),
         this.destinationPath('.gitignore')
-      )
-    },
-
-    rootDocument: function() {
-      this.fs.copyTpl(
-        this.templatePath('src/index.html'),
-        this.destinationPath('src/index.html'),
-        { applicationName: this.userConfig.applicationName }
-      );
-    },
-
-    mainJs: function() {
-      this.fs.copyTpl(
-        this.templatePath('src/main.js'),
-        this.destinationPath('src/main.js')
       )
     },
 
@@ -99,7 +91,10 @@ module.exports = generators.Base.extend({
     gulp: function() {
       this.fs.copyTpl(
         this.templatePath('gulpfile.js'),
-        this.destinationPath('gulpfile.js')
+        this.destinationPath('gulpfile.js'),
+        {
+          scaffold: this.userConfig.scaffold
+        }
       );
 
       this.fs.copyTpl(
@@ -111,8 +106,68 @@ module.exports = generators.Base.extend({
     package: function() {
       this.fs.copyTpl(
         this.templatePath('package.json'),
-        this.destinationPath('package.json')
+        this.destinationPath('package.json'),
+        {
+          scaffold: this.userConfig.scaffold
+        }
       );
+    },
+
+    base_scaffold: function() {
+      if(this.userConfig.scaffold !== 'nothing') return;
+
+      var src_root = 'src/scaffold/base';
+
+      // copy the root files
+      this.fs.copyTpl(
+        this.templatePath(src_root + '/js/main.js'),
+        this.destinationPath('/src/js/main.js'));
+
+      this.fs.copyTpl(
+        this.templatePath(src_root + '/index.html'),
+        this.destinationPath('src/index.html'),
+        { applicationName: this.userConfig.applicationName });
+    },
+
+    react_scaffold: function() {
+      if(this.userConfig.scaffold !== 'React and Bootstrap') return;
+
+      var src_root = 'src/scaffold/react';
+
+      //copy components
+      this.fs.copyTpl(
+        this.templatePath(src_root + '/js/components/App.react.js'),
+        this.destinationPath('src/js/components/App.react.js'));
+
+      this.fs.copyTpl(
+        this.templatePath(src_root + '/js/components/Dashboard.react.js'),
+        this.destinationPath('src/js/components/Dashboard.react.js'));
+
+      this.fs.copyTpl(
+        this.templatePath(src_root + '/js/components/Footer.react.js'),
+        this.destinationPath('src/js/components/Footer.react.js'));
+
+      this.fs.copyTpl(
+        this.templatePath(src_root + '/js/components/Header.react.js'),
+        this.destinationPath('src/js/components/Header.react.js'));
+
+      this.fs.copyTpl(
+        this.templatePath(src_root + '/js/components/Login.react.js'),
+        this.destinationPath('src/js/components/Login.react.js'));
+
+      // copy the root files
+      this.fs.copyTpl(
+        this.templatePath(src_root + '/js/main.react.js'),
+        this.destinationPath('src/js/main.react.js'));
+
+      this.fs.copyTpl(
+        this.templatePath(src_root + '/js/routes.react.js'),
+        this.destinationPath('src/js/routes.react.js'));
+
+      this.fs.copyTpl(
+        this.templatePath(src_root + '/index.html'),
+        this.destinationPath('src/index.html'),
+        { applicationName: this.userConfig.applicationName });
     }
   }
 });

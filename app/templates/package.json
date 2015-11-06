@@ -1,10 +1,21 @@
 {
   "dependencies": {
     "browserify": "^11.1.0",
-    "gulp-concat": "^2.6.0",
     "gulp": "^3.9.0",
+    "gulp-concat": "^2.6.0",
     "gulp-eslint": "^1.0.0",
     "gulp-sass": "^2.0.4",
     "vinyl-source-stream": "^1.1.0"
+
+    <% if(scaffold.indexOf('React') > -1) { %>
+      ,"react": "^0.14.2"
+      ,"react-dom": "^0.14.2"
+      ,"react-router": "^0.13.5"
+      ,"reactify": "^1.1.1"
+    <% } %>
+
+    <% if(scaffold.indexOf('Bootstrap') > -1) { %>
+      ,"bootstrap": "^3.3.5"
+    <% } %>
   }
 }

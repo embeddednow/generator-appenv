@@ -4,6 +4,7 @@ var browserify = require('browserify'),
     concat = require('gulp-concat'),
     gulp = require('gulp'),
     lint = require('gulp-eslint'),
+    reactify = require('reactify'), // TODO: Make this conditional
     sass = require('gulp-sass'),
     source = require('vinyl-source-stream');
 
@@ -21,11 +22,31 @@ var config = {
 
     js: './src/**/*.js',
 
-    mainJs: './src/main.js',
+    mainJs: './src/js/main.react.js',
 
     manifest: './src/manifest.json'
   }
 };
+
+gulp.task('lint', function() {
+  return gulp.src(config.paths.js).
+           pipe(lint({ config: "eslint.config.json" })).
+           pipe(lint.format());
+});
+
+gulp.task('html', function() {
+  gulp.src(config.paths.html).
+    pipe(gulp.dest(config.paths.dist));
+});
+
+gulp.task('js', function() {
+  browserify(config.paths.mainJs)
+    .transform(reactify) // TODO: Make this conditional
+    .bundle()
+    .on('error', console.error.bind(console))
+    .pipe(source('bundle.js'))
+    .pipe(gulp.dest(config.paths.dist + '/js'));
+});
 
 gulp.task('css', function() {
   gulp.src(config.paths.css).
@@ -34,28 +55,9 @@ gulp.task('css', function() {
     pipe(gulp.dest(config.paths.dist + '/css'));
 });
 
-gulp.task('html', function() {
-  gulp.src(config.paths.html).
-    pipe(gulp.dest(config.paths.dist));
-});
-
 gulp.task('images', function() {
   gulp.src(config.paths.images).
     pipe(gulp.dest(config.paths.dist + '/images'));
-});
-
-gulp.task('js', function() {
-  browserify(config.paths.mainJs).
-    bundle().
-    on('error', console.error.bind(console)).
-    pipe(source('bundle.js')).
-    pipe(gulp.dest(config.paths.dist + '/scripts'));
-});
-
-gulp.task('lint', function() {
-  return gulp.src(config.paths.js).
-           pipe(lint({ config: "eslint.config.json" })).
-           pipe(lint.format());
 });
 
 gulp.task('manifest', function() {
