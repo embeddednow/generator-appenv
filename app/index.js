@@ -181,6 +181,12 @@ module.exports = generators.Base.extend({
         this.templatePath(src_root + '/js/components/Login.react.js'),
         this.destinationPath('src/js/components/Login.react.js'));
 
+      // copy scss
+      this.fs.copy(
+        this.templatePath(src_root + '/css/style.scss'),
+        this.destinationPath('src/css/style.scss')  
+      )
+
       // copy the root files
       this.fs.copyTpl(
         this.templatePath(src_root + '/js/main.react.js'),

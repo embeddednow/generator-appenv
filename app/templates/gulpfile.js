@@ -9,12 +9,14 @@ var browserify = require('browserify'),
     source = require('vinyl-source-stream');
 
     <%
-    var css_srcs = ['\'./src.sass\''];
+    var css_srcs = [];
 
     if(scaffold.indexOf('Bootstrap') > -1) {
       css_srcs.push('\'node_modules/bootstrap/dist/css/bootstrap.min.css\'');
       css_srcs.push('\'node_modules/bootstrap/dist/css/bootstrap-theme.min.css\'');
     }
+
+    css_srcs.push('\'./src/css/style.scss\'');
     -%>
 
 var config = {
