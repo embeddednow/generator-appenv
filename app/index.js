@@ -104,11 +104,31 @@ module.exports = generators.Base.extend({
     },
 
     package: function() {
+      var packages = [
+        { name: 'browserify', version: '^11.1.0' },
+        { name: 'gulp', version: '^3.9.0' },
+        { name: 'gulp-concat', version: '^2.6.0' },
+        { name: 'gulp-eslint', version: '^1.0.0' },
+        { name: 'gulp-sass', version: '^2.0.4' },
+        { name: 'vinyl-source-stream', version: '^1.1.0' }
+      ];
+
+      if(this.userConfig.scaffold.indexOf('React') > -1) {
+        packages.push({ name: 'react', version: '^0.14.2' });
+        packages.push({ name: 'react-dom', version: '^0.14.2' });
+        packages.push({ name: 'react-router', version: '^0.13.5' });
+        packages.push({ name: 'reactify', version: '^1.1.1' });
+      }
+
+      if(this.userConfig.scaffold.indexOf('Bootstrap') > -1) {
+        packages.push({ name: 'bootstrap', version: '^3.3.5' });
+      }
+
       this.fs.copyTpl(
         this.templatePath('package.json'),
         this.destinationPath('package.json'),
         {
-          scaffold: this.userConfig.scaffold
+          packages: packages
         }
       );
     },
