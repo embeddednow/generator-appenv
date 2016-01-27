@@ -1,6 +1,7 @@
 'use strict';
 
-var browserify = require('browserify'),
+var path = require('path'),
+    browserify = require('browserify'),
     concat = require('gulp-concat'),
     gulp = require('gulp'),
     lint = require('gulp-eslint'),
@@ -27,13 +28,15 @@ var config = {
 
     html: './src/*.html',
 
-    images: './src/images/*',
+    images: './src/images/**',
 
     js: './src/**/*.js',
 
     mainJs: './src/js/main.react.js',
 
-    manifest: './src/manifest.json'
+    manifest: './src/manifest.json',
+
+    modules: './modules/**'
   }
 };
 
@@ -54,24 +57,29 @@ gulp.task('js', function() {
     .bundle()
     .on('error', console.error.bind(console))
     .pipe(source('bundle.js'))
-    .pipe(gulp.dest(config.paths.dist + '/js'));
+    .pipe(gulp.dest(path.join(config.paths.dist, 'js')));
 });
 
 gulp.task('css', function() {
   gulp.src(config.paths.css).
     pipe(sass.sync().on('error', sass.logError)).
     pipe(concat('bundle.css')).
-    pipe(gulp.dest(config.paths.dist + '/css'));
+    pipe(gulp.dest(path.join(config.paths.dist, 'css')));
 });
 
 gulp.task('images', function() {
   gulp.src(config.paths.images).
-    pipe(gulp.dest(config.paths.dist + '/images'));
+    pipe(gulp.dest(path.join(config.paths.dist, 'images')));
 });
 
 gulp.task('manifest', function() {
   gulp.src(config.paths.manifest).
     pipe(gulp.dest(config.paths.dist));
+});
+
+gulp.task('modules', function() {
+  gulp.src(config.paths.modules).
+    pipe(gulp.dest(path.join(config.paths.dist, 'modules')));
 });
 
 gulp.task('default', [
@@ -80,5 +88,6 @@ gulp.task('default', [
   'js',
   'css',
   'images',
-  'manifest'
+  'manifest',
+  'modules'
 ]);
