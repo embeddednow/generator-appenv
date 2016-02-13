@@ -143,7 +143,7 @@ module.exports = generators.Base.extend({
       // copy the root files
       this.fs.copyTpl(
         this.templatePath(src_root + '/js/main.js'),
-        this.destinationPath('/src/js/main.js'));
+        this.destinationPath('src/js/main.js'));
 
       this.fs.copyTpl(
         this.templatePath(src_root + '/index.html'),
@@ -184,7 +184,7 @@ module.exports = generators.Base.extend({
       // copy scss
       this.fs.copy(
         this.templatePath(src_root + '/css/style.scss'),
-        this.destinationPath('src/css/style.scss')  
+        this.destinationPath('src/css/style.scss')
       )
 
       // copy the root files
